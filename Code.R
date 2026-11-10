@@ -655,7 +655,6 @@ calc_auc <- function(data, indices, predict_time) {
   )
   return(roc$AUC)
 }
-# 设置随机种子
 set.seed(123)
 
 # 3-year AUC
@@ -666,9 +665,9 @@ boot_results <- boot(
   R = 1000,
   predict_time = 36  
 )
-# 计算 95% 置信区间（百分位数法）
+# 95% CI
 boot_ci <- boot.ci(boot_results, type = "perc")
-# 输出 AUC 和 95% CI
+# AUC AND 95% CI
 cat("AUC at 3-year:", round(boot_results$t0, 3), "\n")
 cat("95% CI:", round(boot_ci$percent[4:5], 3), "\n")
 
@@ -687,22 +686,21 @@ calc_auc <- function(data, indices, predict_time) {
   )
   return(roc$AUC)
 }
-# 设置随机种子
 set.seed(123)
 
 # 3-year AUC
 library(survivalROC)
 library(boot)
-# 执行 Bootstrap（R=1000 次）
+# Bootstrap（R=1000 ）
 boot_results <- boot(
   data = aa,
   statistic = calc_auc,
   R = 1000,
   predict_time = 36  
 )
-# 计算 95% 置信区间（百分位数法）
+#  95% CI
 boot_ci <- boot.ci(boot_results, type = "perc")
-# 输出 AUC 和 95% CI
+# AUC AND 95% CI
 cat("AUC at 3-year:", round(boot_results$t0, 3), "\n")
 cat("95% CI:", round(boot_ci$percent[4:5], 3), "\n")
 
@@ -721,22 +719,21 @@ calc_auc <- function(data, indices, predict_time) {
   )
   return(roc$AUC)
 }
-# 设置随机种子
 set.seed(123)
 
 # 3-year AUC
 library(survivalROC)
 library(boot)
-# 执行 Bootstrap（R=1000 次）
+# Bootstrap（R=1000 ）
 boot_results <- boot(
   data = aa,
   statistic = calc_auc,
   R = 1000,
   predict_time = 36  
 )
-# 计算 95% 置信区间（百分位数法）
+#  95% CI
 boot_ci <- boot.ci(boot_results, type = "perc")
-# 输出 AUC 和 95% CI
+# AUC AND 95% CI
 cat("AUC at 3-year:", round(boot_results$t0, 3), "\n")
 cat("95% CI:", round(boot_ci$percent[4:5], 3), "\n")
 
@@ -760,10 +757,9 @@ roc_cox5 <- survivalROC(aa$time, aa$css, cox_predic_score,
                         predict.time = 12,  
                         method = "KM")
 
-# 设置图形参数
-par(mar = c(5, 5, 2, 2))  # 调整边距（下、左、上、右）
+par(mar = c(5, 5, 2, 2))  
 
-# 绘制1-year ROC曲线（红色）
+# 1-year ROC
 plot(roc_cox1$FP, roc_cox1$TP, 
      type = "l", col = "orange", 
      xlim = c(0, 1), ylim = c(0, 1),
@@ -772,20 +768,18 @@ plot(roc_cox1$FP, roc_cox1$TP,
      ylab = "Sensitivity",
      main = "1 year")
 
-# 添加3-year ROC曲线（蓝色）
+# 3-year ROC）
 lines(roc_cox3$FP, roc_cox3$TP, 
       type = "l", col = "#203b66", 
       lty = 4, lwd = 3)
 
-# 添加5-year ROC曲线（蓝色）
+# 5-year ROC
 lines(roc_cox5$FP, roc_cox5$TP, 
       type = "l", col = "#c92327", 
       lty = 1, lwd = 2)
 
-# 添加参考线（对角线）
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
-# 添加图例
 legend(x = 0.5, y = 0.4,  
        legend = c(paste0("pN stage = ", round(roc_cox1$AUC, 3)),
                   paste0("LNR = ", round(roc_cox3$AUC, 3)),
@@ -793,8 +787,8 @@ legend(x = 0.5, y = 0.4,
        col = c("orange", "#203b66","#c92327"), 
        lty = c(3,4,1), 
        lwd = c(3,3,2),
-       bty = "n",  # 无边框
-       cex = 0.8)  # 字体大小
+       bty = "n",  
+       cex = 0.8)  
 
 
 # ROC curve (3-year)
@@ -816,10 +810,9 @@ roc_cox5 <- survivalROC(aa$time, aa$css, cox_predic_score,
                         predict.time = 36,  
                         method = "KM")
 
-# 设置图形参数
-par(mar = c(5, 5, 2, 2))  # 调整边距（下、左、上、右）
+par(mar = c(5, 5, 2, 2))  
 
-# 绘制1-year ROC曲线（红色）
+# 1-year ROC
 plot(roc_cox1$FP, roc_cox1$TP, 
      type = "l", col = "orange", 
      xlim = c(0, 1), ylim = c(0, 1),
@@ -828,20 +821,18 @@ plot(roc_cox1$FP, roc_cox1$TP,
      ylab = "Sensitivity",
      main = "3 year")
 
-# 添加3-year ROC曲线（蓝色）
+# 3-year ROC
 lines(roc_cox3$FP, roc_cox3$TP, 
       type = "l", col = "#203b66", 
       lty = 4, lwd = 3)
 
-# 添加5-year ROC曲线（蓝色）
+# 5-year ROC
 lines(roc_cox5$FP, roc_cox5$TP, 
       type = "l", col = "#c92327", 
       lty = 1, lwd = 2)
 
-# 添加参考线（对角线）
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
-# 添加图例
 legend(x = 0.5, y = 0.4,  
        legend = c(paste0("pN stage = ", round(roc_cox1$AUC, 3)),
                   paste0("LNR = ", round(roc_cox3$AUC, 3)),
@@ -872,10 +863,9 @@ roc_cox5 <- survivalROC(aa$time, aa$css, cox_predic_score,
                         predict.time = 60,  
                         method = "KM")
 
-# 设置图形参数
-par(mar = c(5, 5, 2, 2))  # 调整边距（下、左、上、右）
+par(mar = c(5, 5, 2, 2))  
 
-# 绘制1-year ROC曲线（红色）
+# 1-year ROC
 plot(roc_cox1$FP, roc_cox1$TP, 
      type = "l", col = "orange", 
      xlim = c(0, 1), ylim = c(0, 1),
@@ -884,20 +874,18 @@ plot(roc_cox1$FP, roc_cox1$TP,
      ylab = "Sensitivity",
      main = "5 year")
 
-# 添加3-year ROC曲线（蓝色）
+# 3-year ROC
 lines(roc_cox3$FP, roc_cox3$TP, 
       type = "l", col = "#203b66", 
       lty = 4, lwd = 3)
 
-# 添加5-year ROC曲线（蓝色）
+# 5-year ROC
 lines(roc_cox5$FP, roc_cox5$TP, 
       type = "l", col = "#c92327", 
       lty = 1, lwd = 2)
 
-# 添加参考线（对角线）
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
-# 添加图例
 legend(x = 0.5, y = 0.4,  
        legend = c(paste0("pN stage = ", round(roc_cox1$AUC, 3)),
                   paste0("LNR = ", round(roc_cox3$AUC, 3)),
@@ -905,15 +893,13 @@ legend(x = 0.5, y = 0.4,
        col = c("orange", "#203b66","#c92327"), 
        lty = c(3,4,1), 
        lwd = c(3,3,2),
-       bty = "n",  # 无边框
-       cex = 0.8)  # 字体大小
+       bty = "n",  
+       cex = 0.8)  
 # 5*5 inch
 
 
-# 加载包
 library(survival)
 library(survminer)
-#加载数据
 aa<-read.csv("validation.csv")
 aa$n<-factor(aa$n,levels = c(1,2,3,4),
                  labels = c("N0","N1","N2","N3"))
@@ -992,10 +978,8 @@ p <- ggsurvplot(fit,
 p
 
 
-# 加载包
 library(survival)
 library(survminer)
-#加载数据
 aa<-read.csv("SEER.csv")
 aa$n<-factor(aa$n,levels = c(1,2,3,4),
              labels = c("N0","N1","N2","N3"))
@@ -1303,11 +1287,8 @@ ggsurvplot(fit,
            conf.int = F)
 
 
-
-# 加载包
 library(survival)
 library(survminer)
-#加载数据
 aa<-read.csv("validation.csv")
 aa$n<-factor(aa$n,levels = c(1,2,3,4),
              labels = c("N0","N1","N2","N3"))
@@ -1637,7 +1618,7 @@ node_color <- JS('d3.scaleOrdinal()
                          "#D95F02","#A32A31","#F2B749"])')
 
 
-# 绘制交互式桑基图（移除错误的 nodeGroup 参数）
+# Create an interactive Sankey diagram
 p <- sankeyNetwork(Links = links, 
                    Nodes = nodes,
                    Source = "source", 
@@ -1654,7 +1635,7 @@ p <- sankeyNetwork(Links = links,
 )  
 p
 
-###保存为PDF 格式图片
+### Save PDF
 
 library(webshot)
 
@@ -1729,7 +1710,7 @@ node_color <- JS('d3.scaleOrdinal()
                          "#D95F02","#A32A31","#F2B749"])')
 
 
-# 绘制交互式桑基图（移除错误的 nodeGroup 参数）
+# Create an interactive Sankey diagram
 p <- sankeyNetwork(Links = links, 
                    Nodes = nodes,
                    Source = "source", 
@@ -1746,7 +1727,7 @@ p <- sankeyNetwork(Links = links,
 )  
 p
 
-###保存为PDF 格式图片
+### Save PDF
 
 library(webshot)
 
@@ -1799,10 +1780,10 @@ ggplot(df, aes(x = Stage, y = Value, fill = LODDS)) +
 # 6*8 inch
 
 
-# 绘制散点图
+# Create a scatter plot
 aa<-read.csv("SEER.csv")
 
-# 计算相关性
+# Calculate the correlation
 cor_test <- cor.test(aa$LNR, aa$LODDS, method = "spearman", use = "complete.obs")
 cor_test
 
@@ -1821,7 +1802,7 @@ axis(1, lwd = 1.5)
 axis(2, lwd = 1.5)   
 box(lwd = 1.5, bty = "l")
 
-# 计算相关性
+# Calculate the correlation
 cor_test <- cor.test(aa$pln, aa$LODDS, method = "spearman", use = "complete.obs")
 cor_test
 
@@ -1840,7 +1821,7 @@ axis(1, lwd = 1.5)
 axis(2, lwd = 1.5)   
 box(lwd = 1.5, bty = "l")
 
-# 计算相关性
+# Calculate the correlation
 cor_test <- cor.test(aa$pln, aa$LNR, use = "complete.obs")
 cor_test
 
@@ -1877,7 +1858,7 @@ x[g4] <- seq(3, 4, length.out = sum(g4))
 x[g5] <- seq(4, 5, length.out = sum(g5))
 x[g6] <- seq(5, 6, length.out = sum(g6))
 
-# 排序
+# Rank
 y <- aa$LODDS
 y[g1] <- sort(y[g1])
 y[g2] <- sort(y[g2])
@@ -1886,7 +1867,7 @@ y[g4] <- sort(y[g4])
 y[g5] <- sort(y[g5])
 y[g6] <- sort(y[g6])
 
-# 配色
+# Color
 col_vec <- rep("#000000", nrow(aa))
 col_vec[g1] <- "#D4556E"    
 col_vec[g2] <- "#38A169"    
@@ -1895,7 +1876,7 @@ col_vec[g4] <- "#DD6B20"
 col_vec[g5] <- "#805AD5"   
 col_vec[g6] <- "#D72828"    
 
-#绘图
+# Plot
 plot(x, y,
      ylab = "LODDS",
      xlab = "",
@@ -1906,7 +1887,7 @@ plot(x, y,
      bty = "n",
      axes = FALSE)
 
-#去除X及Y轴
+# Remove X and Y
 axis(1, lwd = 1.5, at = 0:6, labels = 0:6) 
 axis(2, lwd = 1.5)
 box(lwd = 1.5, bty = "l")
@@ -1931,7 +1912,7 @@ x[g6] <- seq(5, 6, length.out = sum(g6))
 
 y <- aa$time  
 
-# 颜色
+# Color
 col_vec <- rep("#000000", nrow(aa))
 col_vec[g1] <- "#D4556E"    
 col_vec[g2] <- "#38A169"    
@@ -1942,7 +1923,7 @@ col_vec[g6] <- "#D72828"
 
 pch_vec <- ifelse(aa$css == 0, 19, 17)
 
-# 绘图
+# Plot
 plot(x, y,
      ylab = "Time (moths)",
      xlab = "",
@@ -1954,7 +1935,7 @@ plot(x, y,
      axes = FALSE,
      ylim = c(0, 160))
 
-#去除X及Y轴
+# Remove the x-axis and y-axis
 axis(1, lwd = 1.5, at = 0:6, labels = 0:6) 
 axis(2, lwd = 1.5, at = c(0,20,40,60,80,100,120,140,160)) 
 box(lwd = 1.5, bty = "l")
@@ -1968,7 +1949,7 @@ g3 <- aa$LNR > 0.05 & aa$LNR <= 0.10
 g4 <- aa$LNR > 0.10 & aa$LNR <= 0.20      
 g5 <- aa$LNR > 0.20                       
 
-# X轴位置
+# X-axis
 x <- numeric(nrow(aa))
 x[g1] <- seq(0,1, length.out=sum(g1))
 x[g2] <- seq(1,2, length.out=sum(g2))
@@ -2005,7 +1986,7 @@ axis(1, lwd=1.5, at=0:5)
 axis(2, lwd=1.5)
 box(lwd=1.5, bty="l")
 
-# 5组分隔线
+# Divider lines for five groups
 abline(v=c(1,2,3,4), lty=2, lwd=2, col="black")
 
 
@@ -2016,7 +1997,7 @@ g3 <- aa$LNR > 0.05 & aa$LNR <= 0.10
 g4 <- aa$LNR > 0.10 & aa$LNR <= 0.20      
 g5 <- aa$LNR > 0.20                       
 
-# X轴位置
+# X-axis location
 x <- numeric(nrow(aa))
 x[g1] <- seq(0,1, length.out=sum(g1))
 x[g2] <- seq(1,2, length.out=sum(g2))
@@ -2026,7 +2007,7 @@ x[g5] <- seq(4,5, length.out=sum(g5))
 
 y <- aa$time  
 
-# 颜色
+# Color
 col_vec <- rep("#000000", nrow(aa))
 col_vec[g1] <- "#D4556E"    
 col_vec[g2] <- "#38A169"    
@@ -2036,7 +2017,7 @@ col_vec[g5] <- "#D72828"
 
 pch_vec <- ifelse(aa$css == 0, 19, 17)
 
-# 绘图
+# Plot
 plot(x, y,
      ylab = "Time (moths)",
      xlab = "",
@@ -2048,15 +2029,13 @@ plot(x, y,
      axes = FALSE,
      ylim = c(0, 160))
 
-#去除X及Y轴
+# Remove the x-axis and y-axis
 axis(1, lwd = 1.5, at = 0:6, labels = 0:6) 
 axis(2, lwd = 1.5, at = c(0,20,40,60,80,100,120,140,160)) 
 box(lwd = 1.5, bty = "l")
 abline(v = c(1,2,3,4,5), lty = 2, lwd = 2, col = "black")
 
 
-
-# 加载包
 library(survival)
 library(survminer)
 aa<-read.csv("SEER.csv")
@@ -2095,32 +2074,10 @@ p$table <- p$table + theme(
 p
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 加载包
 library(survival)
 library(survminer)
 library(rms)
 library(DynNom)
-#加载数据
 aa<-read.csv("train.csv")
 aa$age<-factor(aa$age,levels = c(1,2),
                labels = c(" < 60 years ","≥ 60 years"))
@@ -2143,7 +2100,7 @@ aa$lodds<-factor(aa$lodds,levels = c(1,2,3,4,5,6),
 aa$rad<-factor(aa$rad,levels = c(1,2),
                labels = c("None","PORT"))
 summary(aa)
-###单因素
+### Univariable analysis
 cox=coxph(Surv(time, css=="1") ~aa$age, data = aa)
 summary(cox)
 
@@ -2187,7 +2144,7 @@ upper <- 0.683 + 0.009 * 1.96
 cat("95%CI：", round(lower, 3), " ~ ", round(upper, 3), "\n")
 
 
-###多因素分析
+### Multivariable analysis
 
 # TNM stage 
 cox<- coxph(Surv(time,css =="1")
@@ -2222,27 +2179,26 @@ summary(cox)
 vif_values <- vif(cox)
 print(vif_values)
 
-#加载数据
 nomo<-datadist(aa)
 options(datadist='nomo')
 
-#构建多因素回归模型
+# Construct the multivariable regression model
 nomo1 <- cph(Surv(time,css==1)~ age + race +grade + t + pln + lodds ,
              x=T,y=T,
              data=aa,
              surv=T,);
 nomo1
-#直接计算C指数------------------------------------------------------------
+# C-index------------------------------------------------------------
 Cindex <- rcorrcens(Surv(as.numeric(aa$time),aa$css==1)~predict(nomo1))
 Cindex 
-#设置预测时间
-#里预测3个：1,3,5年
+# Time
+#1-,3-,5-year年
 surv <- Survival(nomo1)                         
 surv1 <- function(x)surv(12*1,lp=x)
 surv2 <- function(x)surv(12*3,lp=x)
 surv3 <- function(x)surv(12*5,lp=x)
 
-#绘图----------------------------------------------------------------------
+# Plot----------------------------------------------------------------------
 nomogram
 nomo2<-nomogram(nomo1,
                 fun=list(surv1,surv2,surv3),
@@ -2276,9 +2232,7 @@ plot(
 nomo2
 # 8*10 
 
-
-### 
-# 
+### Dynomic nomogram
 fit<- coxph(Surv(time, css == "1") ~ age + race + grade 
              + t + pln + lodds, 
              data = aa)
@@ -2286,8 +2240,6 @@ summary(fit)
 
 DynNom(fit)
 
-
-#### 绑定账号
 library(rsconnect)
 rsconnect::setAccountInfo(name='zhurunqiu',
                           token='B99676DEEC43180AEB39624E425E3BBA',
@@ -2296,12 +2248,9 @@ rsconnect::setAccountInfo(name='zhurunqiu',
 DNbuilder(fit)
 
 
-
-# 加载包
 library(survival)
 library(survminer)
 library(rms)
-#加载数据
 aa<-read.csv("test.csv")
 aa$age<-factor(aa$age,levels = c(1,2),
                labels = c(" < 60 years ","≥ 60 years"))
@@ -2324,7 +2273,6 @@ aa$lodds<-factor(aa$lodds,levels = c(1,2,3,4,5,6),
 aa$rad<-factor(aa$rad,levels = c(1,2),
                labels = c("None","PORT"))
 summary(aa)
-###单因素
 cox=coxph(Surv(time, css=="1") ~aa$age, data = aa)
 summary(cox)
 
@@ -2367,9 +2315,6 @@ lower <- 0.674 - 0.014 * 1.96
 upper <- 0.674 + 0.014 * 1.96
 cat("95%CI：", round(lower, 3), " ~ ", round(upper, 3), "\n")
 
-
-###多因素分析
-
 # TNM stage 
 cox<- coxph(Surv(time,css =="1")
             ~ t + n 
@@ -2390,11 +2335,9 @@ upper <- 0.718 + 0.013 * 1.96
 cat("95%CI：", round(lower, 3), " ~ ", round(upper, 3), "\n")
 
 
-# 加载包
 library(survival)
 library(survminer)
 library(rms)
-#加载数据
 aa<-read.csv("validation.csv")
 aa$age<-factor(aa$age,levels = c(1,2),
                labels = c(" < 60 years ","≥ 60 years"))
@@ -2417,7 +2360,6 @@ aa$lodds<-factor(aa$lodds,levels = c(1,2,3,4,5,6),
 aa$rad<-factor(aa$rad,levels = c(1,2),
                labels = c("None","PORT"))
 
-###单因素
 cox=coxph(Surv(time, css=="1") ~aa$n, data = aa)
 summary(cox)
 lower <- 0.658 - 0.016 * 1.96
@@ -2437,9 +2379,6 @@ summary(cox)
 lower <- 0.696 - 0.017 * 1.96
 upper <- 0.696 + 0.017 * 1.96
 cat("95%CI：", round(lower, 3), " ~ ", round(upper, 3), "\n")
-
-
-###多因素分析
 
 # TNM stage 
 cox<- coxph(Surv(time,css =="1")
@@ -2474,7 +2413,7 @@ rcsplot(data = aa,
         exposure ="lodds")
 
 
-## 校准曲线
+## Calibration curve
 library(rms)
 aa<-read.csv("test.csv")
 aa$age<-factor(aa$age,levels = c(1,2),
@@ -2498,10 +2437,10 @@ aa$lodds<-factor(aa$lodds,levels = c(1,2,3,4,5,6),
 aa$rad<-factor(aa$rad,levels = c(1,2),
                labels = c("None","PORT"))
 
-# 1、设置数据环境
+# Data environment
 nomo<-datadist(aa)
 options(datadist='nomo')
-# 模型
+# Model
 units(aa$time) <- "month"
 nomo1 <- cph(Surv(time,status==1)~ age + race +grade + t + pln + lodds,
              x=T,y=T,
@@ -3189,12 +3128,10 @@ plot(0, 0, type = "n",
      ylab = "Sensitivity",
      main = "")
 
-# 绘制三条 ROC 曲线 
 lines(roc_cox1$FP, roc_cox1$TP, col = "#c92327", lty = 1, lwd = 3)
 lines(roc_cox2$FP, roc_cox2$TP, col = "#203b66", lty = 1, lwd = 3)
 lines(roc_cox3$FP, roc_cox3$TP, col = "orange", lty = 1, lwd = 3)
 
-#添加图例
 legend(x=0.6,
        y=0.2,
        legend = c(paste("AUC at 1-year:", round(roc_cox1$AUC, 3)),
@@ -3210,7 +3147,6 @@ legend(x=0.6,
        cex = 0.8,
        bty = "n")
 
-#参考线 
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
 
@@ -3218,7 +3154,6 @@ abline(0, 1, lty = 2, lwd = 2, col = "black")
 rm(list = ls())
 # Training cohort
 pbc<-read.table("test.csv",header = T,sep = ",")
-#把status分为两类
 pbc$died <- pbc$css==1
 pbc$status =ifelse(pbc$died=="TRUE",1,0)
 head(pbc)
@@ -3249,7 +3184,6 @@ pbc$Nomogram= c(1 - (summary(survfit(coxmod5,newdata=pbc), times=36)$surv))
 
 head(pbc)
 source("stdca.R")  
-###构建模型
 mod1<-stdca(data=pbc, 
             outcome="css", 
             ttoutcome="time", 
@@ -3311,7 +3245,6 @@ stdca(data=pbc,
 rm(list = ls())
 # Training cohort
 pbc<-read.table("validation.csv",header = T,sep = ",")
-#把status分为两类
 pbc$died <- pbc$css==1
 pbc$status =ifelse(pbc$died=="TRUE",1,0)
 head(pbc)
@@ -3342,7 +3275,6 @@ pbc$Nomogram= c(1 - (summary(survfit(coxmod5,newdata=pbc), times=36)$surv))
 
 head(pbc)
 source("stdca.R")  
-###构建模型
 mod1<-stdca(data=pbc, 
             outcome="css", 
             ttoutcome="time", 
