@@ -2192,7 +2192,7 @@ nomo1
 Cindex <- rcorrcens(Surv(as.numeric(aa$time),aa$css==1)~predict(nomo1))
 Cindex 
 # Time
-#1-,3-,5-year年
+#1-,3-,5-year
 surv <- Survival(nomo1)                         
 surv1 <- function(x)surv(12*1,lp=x)
 surv2 <- function(x)surv(12*3,lp=x)
@@ -2210,7 +2210,7 @@ nomo2<-nomogram(nomo1,
                 conf.int = F,
                 maxscale=100,
                 fun.at = c(0.1,seq(0.1,0.9,by=0.1),0.9))
-#优化---------------------------------------------------------------------
+# Optimize---------------------------------------------------------------------
 par(mar = c(1, 1, 1, 1),  
     xpd = TRUE)           
 plot(
@@ -2906,7 +2906,6 @@ legend("bottomright",
 abline(0,1,col="black",lty=2,lwd=1)
 
 
-# 绘制在一张图上面
 roc_cox1 <- survivalROC(aa$time, 
                         aa$css, 
                         cox_predic_score,
@@ -2931,12 +2930,12 @@ plot(0, 0, type = "n",
      ylab = "Sensitivity",
      main = "")
 
-# 绘制三条 ROC 曲线 
+# ROC curve
 lines(roc_cox1$FP, roc_cox1$TP, col = "#c92327", lty = 1, lwd = 3)
 lines(roc_cox2$FP, roc_cox2$TP, col = "#203b66", lty = 1, lwd = 3)
 lines(roc_cox3$FP, roc_cox3$TP, col = "orange", lty = 1, lwd = 3)
 
-#添加图例
+#Legend
 legend(x=0.6,
        y=0.2,
        legend = c(paste("AUC at 1-year:", round(roc_cox1$AUC, 3)),
