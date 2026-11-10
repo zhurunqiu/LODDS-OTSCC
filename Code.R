@@ -2406,8 +2406,8 @@ library(survival)
 aa<-read.csv("SEER.csv")
 aa$lodds<-as.numeric(aa$lodds) 
 rcsplot(data = aa,
-        outcome ="css",#生存状态
-        time ="time",#生存时间
+        outcome ="css",
+        time ="time",
         k = 4,
         knots = c(0.05, 0.25, 0.50, 0.75),
         exposure ="lodds")
@@ -2447,61 +2447,55 @@ nomo1 <- cph(Surv(time,status==1)~ age + race +grade + t + pln + lodds,
              data=aa,
              surv=T,
              time.inc = 12*1);
-# 3、模型校准曲线绘制
-p<- calibrate(nomo1,            #模型名称
-              cmethod='KM',    #计算实际生存概率的方法：Kaplan-Meier
-              method='boot',  #检测方法
-              u=12*1,         #评估的时间，注：“一定要与模型的时间一致”
-              m=400,        #每次抽样的样本量，
-              B=1000)      #抽样次数
-#注，m值的确定：m=数据总数/3-4,即你想让最终的校准曲线有3个点，那就是m=数据总数/3
-#B值一般1000，电脑配置不好可以选500,300,100等
-#4、校准曲线美化
+# 
+p<- calibrate(nomo1,            
+              cmethod='KM',    
+              method='boot',  
+              u=12*1,       
+              m=400,        
+              B=1000)      
 plot(p,
      add=F,
-     conf.int=T,           #95%CI（蓝色线）
-     subtitles = F,       #关闭副标题
+     conf.int=T,           #95%CI
+     subtitles = F,      
      cex.subtitles=0.8, 
      lwd=2,
      lty=1,
      errbar.col="purple",
-     xlim=c(0.0,1.0),     #调节x.y轴刻度范围
+     xlim=c(0.0,1.0),     
      ylim=c(0.0,1.0),
      xlab="Nomogram-Predicted 6-month OS probability",
      ylab="Actual-Predicted 6-month OS probability",
      col="purple")
-#参考线类型
 abline(0,1,lty=3,lwd=2,col="black")
 
 
 ###36-month
-###校准曲线图
 nomo2 <- cph(Surv(time,status==1)~age + race +grade + t + pln + lodds,
              x=T,y=T,
              data=aa,
              surv=T,
              time.inc = 36*1);
-p<- calibrate(nomo2,            #模型名称
+p<- calibrate(nomo2,            
               cmethod='KM',
-              method='boot',   #检测方法
-              u=36*1,         #评估的时间，注：“一定要与模型的时间一致”
-              m=400,        #每次抽样的样本量，
-              B=1000)       #抽样次数
-#4、校准曲线美化
+              method='boot',   
+              u=36*1,         
+              m=400,       
+              B=1000)      
+#4、
 plot(p,
      add=F,
-     conf.int=T,           #95%CI（蓝色线）
-     subtitles = F,       #关闭副标题
+     conf.int=T,          
+     subtitles = F,       
      cex.subtitles=0.8, 
      lwd=2,
      lty=1,
      errbar.col="orange",
-     xlim=c(0.0,1.0),     #调节x.y轴刻度范围
+     xlim=c(0.0,1.0),    
      ylim=c(0.0,1.0),
      xlab="Nomogram-Predicted 12-month OS probability",
      ylab="Actual-Predicted 12-month OS probability",
      col="orange")
-#参考线类型
 abline(0,1,lty=3,lwd=2,col="black")
 
 ### 60-month
@@ -2510,33 +2504,29 @@ nomo3 <- cph(Surv(time,status==1)~age + race +grade + t + pln + lodds,
              data=aa,
              surv=T,
              time.inc = 60*1);
-p<- calibrate(nomo3,            #模型名称
+p<- calibrate(nomo3,            
               cmethod='KM',
-              method='boot',   #检测方法
-              u=60*1,         #评估的时间，注：“一定要与模型的时间一致”
-              m=400,        #每次抽样的样本量，
-              B=1000)       #抽样次数
-#注，m值的确定：m=数据总数/3-4,即你想让最终的校准曲线有3个点，那就是m=数据总数/3
-#B值一般1000，电脑配置不好可以选500,300,100等
-#4、校准曲线美化
+              method='boot',   
+              u=60*1,        
+              m=400,       
+              B=1000)       
+#4、
 plot(p,
      add=F,
-     conf.int=T,           #95%CI（蓝色线）
-     subtitles = F,       #关闭副标题
+     conf.int=T,           #95%CI
+     subtitles = F,       
      cex.subtitles=0.8, 
      lwd=2,
      lty=1,
      errbar.col="springgreen4",
-     xlim=c(0.0,1.0),     #调节x.y轴刻度范围
+     xlim=c(0.0,1.0),    
      ylim=c(0.0,1.0),
      xlab="Nomogram-Predicted 18-month OS probability",
      ylab="Actual-Predicted 18-month OS probability",
      col="springgreen4")
-#参考线类型
 abline(0,1,lty=3,lwd=2,col="black")
 
 
-# 合并
 p1 <- calibrate(nomo1,
                 cmethod = 'KM',
                 method = 'boot',
@@ -2544,7 +2534,6 @@ p1 <- calibrate(nomo1,
                 m = 400,
                 B = 1000)
 
-# 绘制第一条曲线（新建画布）
 plot(p1,
      add = FALSE,
      conf.int = TRUE,
@@ -2566,7 +2555,6 @@ p3 <- calibrate(nomo2,
                  m = 400,
                  B = 1000)
 
-# 在同一张图上叠加
 plot(p3,
      add = TRUE,
      conf.int = TRUE,
@@ -2584,7 +2572,6 @@ p5 <- calibrate(nomo3,
                  m = 400,
                  B = 1000)
 
-# 在同一张图上叠加
 plot(p5,
      add = TRUE,
      conf.int = TRUE,
@@ -2594,7 +2581,6 @@ plot(p5,
      errbar.col = "orange",
      col = "orange")
 
-# 添加图例
 legend(x=0.8, 
        y=0.6, 
        legend = c("1-year survival", 
@@ -2609,11 +2595,10 @@ legend(x=0.8,
        lwd = 3,
        bty = "n")
 
-# 参考线
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
 
-## 校准曲线 (Validaation cohort)
+##  Validaation cohort
 library(rms)
 aa<-read.csv("validation.csv")
 aa$age<-factor(aa$age,levels = c(1,2),
@@ -2637,71 +2622,66 @@ aa$lodds<-factor(aa$lodds,levels = c(1,2,3,4,5,6),
 aa$rad<-factor(aa$rad,levels = c(1,2),
                labels = c("None","PORT"))
 
-# 1、设置数据环境
 nomo<-datadist(aa)
 options(datadist='nomo')
-# 模型
+# Model
 units(aa$time) <- "month"
 nomo1 <- cph(Surv(time, css==1)~ age + race + grade + t + pln + lodds,
              x=T,y=T,
              data=aa,
              surv=T,
              time.inc = 12*1);
-# 3、模型校准曲线绘制
-p<- calibrate(nomo1,            #模型名称
-              cmethod='KM',    #计算实际生存概率的方法：Kaplan-Meier
-              method='boot',  #检测方法
-              u=12*1,         #评估的时间，注：“一定要与模型的时间一致”
-              m=250,        #每次抽样的样本量，
-              B=1000)      #抽样次数
-#注，m值的确定：m=数据总数/3-4,即你想让最终的校准曲线有3个点，那就是m=数据总数/3
-#B值一般1000，电脑配置不好可以选500,300,100等
-#4、校准曲线美化
+# 3、calibration curve
+p<- calibrate(nomo1,           
+              cmethod='KM',    
+              method='boot',  
+              u=12*1,         
+              m=250,      
+              B=1000)     
+#4、
 plot(p,
      add=F,
-     conf.int=T,           #95%CI（蓝色线）
-     subtitles = F,       #关闭副标题
+     conf.int=T,           #95%CI
+     subtitles = F,       
      cex.subtitles=0.8, 
      lwd=2,
      lty=1,
      errbar.col="purple",
-     xlim=c(0.0,1.0),     #调节x.y轴刻度范围
+     xlim=c(0.0,1.0),     
      ylim=c(0.0,1.0),
      xlab="Nomogram-Predicted 6-month OS probability",
      ylab="Actual-Predicted 6-month OS probability",
      col="purple")
-#参考线类型
 abline(0,1,lty=3,lwd=2,col="black")
 
 
 ###36-month
-###校准曲线图
+### calibration
 nomo2 <- cph(Surv(time,css==1)~age + race + grade + t + pln + lodds,
              x=T,y=T,
              data=aa,
              surv=T,
              time.inc = 36*1);
-p<- calibrate(nomo2,            #模型名称
+p<- calibrate(nomo2,            
               cmethod='KM',
-              method='boot',   #检测方法
-              u=36*1,         #评估的时间，注：“一定要与模型的时间一致”
-              m=250,        #每次抽样的样本量，
-              B=1000)       #抽样次数
-#4、校准曲线美化
+              method='boot',   
+              u=36*1,         
+              m=250,      
+              B=1000)       
+#4、
 plot(p,
      add=F,
-     conf.int=T,           #95%CI（蓝色线）
-     subtitles = F,       #关闭副标题
+     conf.int=T,           #95%CI
+     subtitles = F,      
      cex.subtitles=0.8, 
      lwd=2,
      lty=1,
      errbar.col="orange",
-     xlim=c(0.0,1.0),     #调节x.y轴刻度范围
+     xlim=c(0.0,1.0),     
      ylim=c(0.0,1.0),
      xlab="Nomogram-Predicted 12-month OS probability",
      ylab="Actual-Predicted 12-month OS probability",
      col="orange")
-#参考线类型
 abline(0,1,lty=3,lwd=2,col="black")
 
 ### 60-month
@@ -2710,33 +2690,30 @@ nomo3 <- cph(Surv(time,css==1)~age + race + grade + t + pln + lodds,
              data=aa,
              surv=T,
              time.inc = 60*1);
-p<- calibrate(nomo3,            #模型名称
+p<- calibrate(nomo3,            
               cmethod='KM',
-              method='boot',   #检测方法
-              u=60*1,         #评估的时间，注：“一定要与模型的时间一致”
-              m=250,        #每次抽样的样本量，
-              B=1000)       #抽样次数
-#注，m值的确定：m=数据总数/3-4,即你想让最终的校准曲线有3个点，那就是m=数据总数/3
-#B值一般1000，电脑配置不好可以选500,300,100等
-#4、校准曲线美化
+              method='boot',   
+              u=60*1,        
+              m=250,        
+              B=1000)       
+#4、plot calibration
 plot(p,
      add=F,
-     conf.int=T,           #95%CI（蓝色线）
-     subtitles = F,       #关闭副标题
+     conf.int=T,           #95%CI
+     subtitles = F,      
      cex.subtitles=0.8, 
      lwd=2,
      lty=1,
      errbar.col="springgreen4",
-     xlim=c(0.0,1.0),     #调节x.y轴刻度范围
+     xlim=c(0.0,1.0),     
      ylim=c(0.0,1.0),
      xlab="Nomogram-Predicted 18-month OS probability",
      ylab="Actual-Predicted 18-month OS probability",
      col="springgreen4")
-#参考线类型
 abline(0,1,lty=3,lwd=2,col="black")
 
 
-# 合并
+# Combine
 p1 <- calibrate(nomo1,
                 cmethod = 'KM',
                 method = 'boot',
@@ -2744,7 +2721,7 @@ p1 <- calibrate(nomo1,
                 m = 250,
                 B = 1000)
 
-# 绘制第一条曲线（新建画布）
+# plot
 plot(p1,
      add = FALSE,
      conf.int = TRUE,
@@ -2766,7 +2743,7 @@ p3 <- calibrate(nomo2,
                 m = 250,
                 B = 1000)
 
-# 在同一张图上叠加
+# Overlay on the same plot
 plot(p3,
      add = TRUE,
      conf.int = TRUE,
@@ -2784,7 +2761,7 @@ p5 <- calibrate(nomo3,
                 m = 250,
                 B = 1000)
 
-# 在同一张图上叠加
+# Overlay on the same plot
 plot(p5,
      add = TRUE,
      conf.int = TRUE,
@@ -2794,7 +2771,7 @@ plot(p5,
      errbar.col = "orange",
      col = "orange")
 
-# 添加图例
+# Legend
 legend(x=0.8, 
        y=0.6, 
        legend = c("1-year survival", 
@@ -2809,7 +2786,7 @@ legend(x=0.8,
        lwd = 3,
        bty = "n")
 
-# 参考线
+# Reference line
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
 
@@ -2817,7 +2794,6 @@ abline(0, 1, lty = 2, lwd = 2, col = "black")
 library(timeROC)
 library(survivalROC)
 library(survival)
-# 清理环境
 rm(list = ls())
 aa<-read.csv("test.csv") 
 aa$age<-factor(aa$age,levels = c(1,2),
@@ -2854,7 +2830,6 @@ roc_cox1 <- survivalROC(
   method = "KM"         
 )
 
-# 绘制 ROC 曲线
 plot(
   roc_cox1$FP,                     
   roc_cox1$TP,                   
@@ -2868,10 +2843,8 @@ plot(
   ylab = "Sensitivity"    
 )
 
-# 输出AUC值并保留3位小数
 round(roc_cox1$AUC, 3)
 
-# 添加图例
 legend(
   "bottomright",                                  
   paste("AUC at 1-year:", 
@@ -2979,7 +2952,6 @@ legend(x=0.6,
        cex = 0.8,
        bty = "n")
 
-#参考线 
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
 
@@ -2987,7 +2959,6 @@ abline(0, 1, lty = 2, lwd = 2, col = "black")
 library(timeROC)
 library(survivalROC)
 library(survival)
-# 清理环境
 rm(list = ls())
 aa<-read.csv("validation.csv") 
 aa$age<-factor(aa$age,levels = c(1,2),
@@ -3024,7 +2995,7 @@ roc_cox1 <- survivalROC(
   method = "KM"         
 )
 
-# 绘制 ROC 曲线
+#  ROC 
 plot(
   roc_cox1$FP,                     
   roc_cox1$TP,                   
@@ -3038,10 +3009,8 @@ plot(
   ylab = "Sensitivity"    
 )
 
-# 输出AUC值并保留3位小数
 round(roc_cox1$AUC, 3)
 
-# 添加图例
 legend(
   "bottomright",                                  
   paste("AUC at 1-year:", 
@@ -3103,7 +3072,6 @@ legend("bottomright",
 abline(0,1,col="black",lty=2,lwd=1)
 
 
-# 绘制在一张图上面
 roc_cox1 <- survivalROC(aa$time, 
                         aa$css, 
                         cox_predic_score,
