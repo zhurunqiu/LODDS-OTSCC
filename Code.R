@@ -574,10 +574,8 @@ legend(x = 0.5, y = 0.4,
 
 
 #  ROC curve (Validation)
-# 加载包
 library(survival)
 library(survminer)
-#加载数据
 aa<-read.csv("validation.csv")
 aa$n<-factor(aa$n,levels = c(1,2,3,4),
              labels = c("N0","N1","N2","N3"))
@@ -658,7 +656,7 @@ calc_auc <- function(data, indices, predict_time) {
 set.seed(123)
 
 # 3-year AUC
-# 执行 Bootstrap（R=1000 次）
+# Bootstrap（R=1000）
 boot_results <- boot(
   data = aa,
   statistic = calc_auc,
