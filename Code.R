@@ -4172,7 +4172,6 @@ p
 cox<- coxph(Surv(time, css =="1")~ rad, data=dta)
 summary(cox)
 
-
 # Training cohort
 library(survival)
 library(survminer)
@@ -4214,7 +4213,6 @@ p$table <- p$table + theme(
   ylab("") +         
   labs(title = "")   
 p
-
 
 # Testing group
 library(survival)
@@ -4298,7 +4296,6 @@ p
 cox<- coxph(Surv(time, css =="1")~ rad, data=dta)
 summary(cox)
 
-
 # Medium-risk group
 table(aa$risk)
 dta <- subset(aa, risk == "Medium-risk")
@@ -4338,7 +4335,6 @@ p
 cox<- coxph(Surv(time, css =="1")~ rad, data=dta)
 summary(cox)
 
-
 # High-risk group
 table(aa$risk)
 dta <- subset(aa, risk == "High-risk")
@@ -4377,7 +4373,6 @@ p$table <- p$table + theme(
 p
 cox<- coxph(Surv(time, css =="1")~ rad, data=dta)
 summary(cox)
-
 
 # Validation cohort
 library(survival)
@@ -4458,10 +4453,8 @@ p$table <- p$table + theme(
   ylab("") +         
   labs(title = "")   
 p
-
 cox<- coxph(Surv(time, css =="1")~ rad, data=dta)
 summary(cox)
-
 
 # Medium-risk group
 table(aa$risk)
@@ -4505,7 +4498,6 @@ p
 
 cox<- coxph(Surv(time, css =="1")~ rad, data=dta)
 summary(cox)
-
 
 # High-risk group
 table(aa$risk)
