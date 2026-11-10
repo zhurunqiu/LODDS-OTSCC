@@ -77,7 +77,6 @@ export2word(restab, file='table1.docx')   # 保存Table 1 的数据
 
 # Baseline characteristics (Europe)
 library(dplyr)
-# 清理环境
 rm(list = ls()) 
 aa<- read.csv('Europe.csv')
 str(aa)
@@ -320,20 +319,20 @@ calc_auc <- function(data, indices, predict_time) {
   )
   return(roc$AUC)
 }
-# 设置随机种子
+# 
 set.seed(123)
 
 # 3-year AUC
-# 执行 Bootstrap（R=1000 次）
+# Bootstrap（R=1000）
 boot_results <- boot(
   data = aa,
   statistic = calc_auc,
   R = 1000,
   predict_time = 36  
 )
-# 计算 95% 置信区间（百分位数法）
+#  95% CI
 boot_ci <- boot.ci(boot_results, type = "perc")
-# 输出 AUC 和 95% CI
+# AUC AND 95% CI
 cat("AUC at 3-year:", round(boot_results$t0, 3), "\n")
 cat("95% CI:", round(boot_ci$percent[4:5], 3), "\n")
 
@@ -352,22 +351,22 @@ calc_auc <- function(data, indices, predict_time) {
   )
   return(roc$AUC)
 }
-# 设置随机种子
+# 
 set.seed(123)
 
 # 3-year AUC
 library(survivalROC)
 library(boot)
-# 执行 Bootstrap（R=1000 次）
+# Bootstrap（R=1000 ）
 boot_results <- boot(
   data = aa,
   statistic = calc_auc,
   R = 1000,
   predict_time = 36  
 )
-# 计算 95% 置信区间（百分位数法）
+#  95% CI
 boot_ci <- boot.ci(boot_results, type = "perc")
-# 输出 AUC 和 95% CI
+#  AUC AND 95% CI
 cat("AUC at 3-year:", round(boot_results$t0, 3), "\n")
 cat("95% CI:", round(boot_ci$percent[4:5], 3), "\n")
 
@@ -386,7 +385,7 @@ calc_auc <- function(data, indices, predict_time) {
   )
   return(roc$AUC)
 }
-# 设置随机种子
+# 
 set.seed(123)
 
 # 3-year AUC
@@ -399,9 +398,9 @@ boot_results <- boot(
   R = 1000,
   predict_time = 36  
 )
-# 计算 95% 置信区间（百分位数法）
+# 95% CI
 boot_ci <- boot.ci(boot_results, type = "perc")
-# 输出 AUC 和 95% CI
+# AUC AND 95% CI
 cat("AUC at 3-year:", round(boot_results$t0, 3), "\n")
 cat("95% CI:", round(boot_ci$percent[4:5], 3), "\n")
 
@@ -425,10 +424,9 @@ roc_cox5 <- survivalROC(aa$time, aa$css, cox_predic_score,
                         predict.time = 12,  
                         method = "KM")
 
-# 设置图形参数
-par(mar = c(5, 5, 2, 2))  # 调整边距（下、左、上、右）
+par(mar = c(5, 5, 2, 2))  
 
-# 绘制1-year ROC曲线（红色）
+# 1-year ROC curve
 plot(roc_cox1$FP, roc_cox1$TP, 
      type = "l", col = "orange", 
      xlim = c(0, 1), ylim = c(0, 1),
@@ -437,20 +435,20 @@ plot(roc_cox1$FP, roc_cox1$TP,
      ylab = "Sensitivity",
      main = "1 year")
 
-# 添加3-year ROC曲线（蓝色）
+# 3-year ROC curve
 lines(roc_cox3$FP, roc_cox3$TP, 
       type = "l", col = "#203b66", 
       lty = 4, lwd = 3)
 
-# 添加5-year ROC曲线（蓝色）
+# 5-year ROC curve
 lines(roc_cox5$FP, roc_cox5$TP, 
       type = "l", col = "#c92327", 
       lty = 1, lwd = 2)
 
-# 添加参考线（对角线）
+# Reference curve
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
-# 添加图例
+# Legend
 legend(x = 0.5, y = 0.4,  
        legend = c(paste0("pN stage = ", round(roc_cox1$AUC, 3)),
                   paste0("LNR = ", round(roc_cox3$AUC, 3)),
@@ -458,8 +456,8 @@ legend(x = 0.5, y = 0.4,
        col = c("orange", "#203b66","#c92327"), 
        lty = c(3,4,1), 
        lwd = c(3,3,2),
-       bty = "n",  # 无边框
-       cex = 0.8)  # 字体大小
+       bty = "n", 
+       cex = 0.8) 
 
 
 # ROC curve (3-year)
@@ -481,10 +479,10 @@ roc_cox5 <- survivalROC(aa$time, aa$css, cox_predic_score,
                         predict.time = 36,  
                         method = "KM")
 
-# 设置图形参数
-par(mar = c(5, 5, 2, 2))  # 调整边距（下、左、上、右）
+# Image
+par(mar = c(5, 5, 2, 2))  
 
-# 绘制1-year ROC曲线（红色）
+# 1-year ROC curve
 plot(roc_cox1$FP, roc_cox1$TP, 
      type = "l", col = "orange", 
      xlim = c(0, 1), ylim = c(0, 1),
@@ -493,20 +491,20 @@ plot(roc_cox1$FP, roc_cox1$TP,
      ylab = "Sensitivity",
      main = "3 year")
 
-# 添加3-year ROC曲线（蓝色）
+# 3-year ROC curve
 lines(roc_cox3$FP, roc_cox3$TP, 
       type = "l", col = "#203b66", 
       lty = 4, lwd = 3)
 
-# 添加5-year ROC曲线（蓝色）
+# 5-year ROC curve
 lines(roc_cox5$FP, roc_cox5$TP, 
       type = "l", col = "#c92327", 
       lty = 1, lwd = 2)
 
-# 添加参考线（对角线）
+# Reference curve
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
-# 添加图例
+# Legend
 legend(x = 0.5, y = 0.4,  
        legend = c(paste0("pN stage = ", round(roc_cox1$AUC, 3)),
                   paste0("LNR = ", round(roc_cox3$AUC, 3)),
@@ -514,8 +512,8 @@ legend(x = 0.5, y = 0.4,
        col = c("orange", "#203b66","#c92327"), 
        lty = c(3,4,1), 
        lwd = c(3,3,2),
-       bty = "n",  # 无边框
-       cex = 0.8)  # 字体大小
+       bty = "n",  
+       cex = 0.8)  
 
 
 # ROC curve (5-year)
@@ -537,10 +535,10 @@ roc_cox5 <- survivalROC(aa$time, aa$css, cox_predic_score,
                         predict.time = 60,  
                         method = "KM")
 
-# 设置图形参数
-par(mar = c(5, 5, 2, 2))  # 调整边距（下、左、上、右）
+# Image
+par(mar = c(5, 5, 2, 2))  
 
-# 绘制1-year ROC曲线（红色）
+# 1-year ROC curve
 plot(roc_cox1$FP, roc_cox1$TP, 
      type = "l", col = "orange", 
      xlim = c(0, 1), ylim = c(0, 1),
@@ -549,20 +547,20 @@ plot(roc_cox1$FP, roc_cox1$TP,
      ylab = "Sensitivity",
      main = "5 year")
 
-# 添加3-year ROC曲线（蓝色）
+# 3-year ROC curve
 lines(roc_cox3$FP, roc_cox3$TP, 
       type = "l", col = "#203b66", 
       lty = 4, lwd = 3)
 
-# 添加5-year ROC曲线（蓝色）
+# 5-year ROC curve
 lines(roc_cox5$FP, roc_cox5$TP, 
       type = "l", col = "#c92327", 
       lty = 1, lwd = 2)
 
-# 添加参考线（对角线）
+# Reference 
 abline(0, 1, lty = 2, lwd = 2, col = "black")
 
-# 添加图例
+# Legend
 legend(x = 0.5, y = 0.4,  
        legend = c(paste0("pN stage = ", round(roc_cox1$AUC, 3)),
                   paste0("LNR = ", round(roc_cox3$AUC, 3)),
@@ -570,12 +568,9 @@ legend(x = 0.5, y = 0.4,
        col = c("orange", "#203b66","#c92327"), 
        lty = c(3,4,1), 
        lwd = c(3,3,2),
-       bty = "n",  # 无边框
-       cex = 0.8)  # 字体大小
+       bty = "n",  
+       cex = 0.8) 
 # 5*5 inch
-
-
-
 
 
 #  ROC curve (Validation)
@@ -4656,241 +4651,3 @@ p$table <- p$table + theme(
 p
 cox<- coxph(Surv(time, css =="1")~ rad, data=dta)
 summary(cox)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 设置环境
-setwd('D:/Sample')
-getwd()
-
-install.packages("randomForestSRC")
-library(randomForestSRC)
-library(survival)
-# clear the environment
-rm(list = ls()) 
-# load the data-set
-aa<- read.csv('ML-train.csv')
-# convert variables to numeric type
-aa$age<-as.numeric(aa$age)
-aa$time<-as.numeric(aa$time)
-aa$Time<-as.numeric(aa$Time)
-aa$risk_score<-as.numeric(aa$risk_score)
-# convert variables to factor type and assign level labels
-aa$age_group<-factor(aa$age_group,levels = c(1,2),
-                     labels = c("< 60 years","≥ 60 years"))
-aa$grade<-factor(aa$grade,levels = c(1,2),
-                 labels = c("I","II/III/IV"))
-aa$tb<-factor(aa$tb,levels = c(0,1),
-              labels = c("Low","High"))
-aa$t<-factor(aa$t,levels = c(1,2),
-              labels = c("T1-T2","T3-T4"))
-aa$n<-factor(aa$n,levels = c(1,2),
-              labels = c("N0","N1-3"))
-aa <- as.data.frame(aa)
-
-### OS
-rsf_model <- rfsrc( Surv(time, status =="1") ~ age_group + grade + 
-                    tb + t + n + risk_score, 
-                    data = aa,
-                    ntree = 500, 
-                    splitrule = "logrank", 
-                    importance = TRUE,
-                    na.action = "na.impute")
-print(rsf_model)
-train_pred <- predict(rsf_model, data = aa)
-c_index <- concordance(Surv(time, status =="1") ~ train_pred$predicted, aa)
-c <- 1-0.12
-lower <- 0.880 - 0.0142 * 1.96
-upper <- 0.880 + 0.0142 * 1.96
-cat("95%CI：", round(lower, 3), " ~ ", round(upper, 3), "\n")
-
-
-### DFS
-rsf_model <- rfsrc( Surv(Time, DFS =="1") ~ grade + 
-                      tb + t + n + risk_score, 
-                    data = aa,
-                    ntree = 500, 
-                    splitrule = "logrank", 
-                    importance = TRUE,
-                    na.action = "na.impute")
-print(rsf_model)
-train_pred <- predict(rsf_model, data = aa)
-c_index <- concordance(Surv(Time, DFS =="1") ~ train_pred$predicted, aa)
-c <- 1-0.120
-lower <- 0.785 - 0.0175 * 1.96
-upper <- 0.785 + 0.0175 * 1.96
-cat("95%CI：", round(lower, 3), " ~ ", round(upper, 3), "\n")
-
-
-# clear the environment
-rm(list = ls()) 
-# load the data-set
-aa<- read.csv('ML-test.csv')
-# convert variables to numeric type
-aa$time<-as.numeric(aa$time)
-aa$Time<-as.numeric(aa$Time)
-aa$risk_score<-as.numeric(aa$risk_score)
-# convert variables to factor type and assign level labels
-aa$age_group<-factor(aa$age_group,levels = c(1,2),
-                     labels = c("< 60 years","≥ 60 years"))
-aa$grade<-factor(aa$grade,levels = c(1,2),
-                 labels = c("I","II/III/IV"))
-aa$tb<-factor(aa$tb,levels = c(0,1),
-              labels = c("Low","High"))
-aa$t<-factor(aa$t,levels = c(1,2),
-             labels = c("T1-T2","T3-T4"))
-aa$n<-factor(aa$n,levels = c(1,2),
-             labels = c("N0","N1-3"))
-aa <- as.data.frame(aa)
-
-### OS
-rsf_model <- rfsrc( Surv(time, status =="1") ~ age_group + grade + 
-                      tb + t + n + risk_score, 
-                    data = aa,
-                    ntree = 500, 
-                    splitrule = "logrank", 
-                    importance = TRUE,
-                    na.action = "na.impute")
-print(rsf_model)
-train_pred <- predict(rsf_model, data = aa)
-c_index <- concordance(Surv(time, status =="1") ~ train_pred$predicted, aa)
-c <- 1-0.163
-lower <- 0.837 - 0.027 * 1.96
-upper <- 0.837 + 0.027 * 1.96
-cat("95%CI：", round(lower, 3), " ~ ", round(upper, 3), "\n")
-
-
-### DFS
-rsf_model <- rfsrc( Surv(Time, DFS =="1") ~ grade + 
-                      tb + t + n + risk_score, 
-                    data = aa,
-                    ntree = 250, 
-                    splitrule = "logrank", 
-                    importance = TRUE,
-                    na.action = "na.impute")
-print(rsf_model)
-train_pred <- predict(rsf_model, data = aa)
-c_index <- concordance(Surv(Time, DFS =="1") ~ train_pred$predicted, aa)
-c <- 1-0.2586
-lower <- 0.741 - 0.028 * 1.96
-upper <- 0.741 + 0.028 * 1.96
-cat("95%CI：", round(lower, 3), " ~ ", round(upper, 3), "\n")
-
-
-library(gbm)
-gbm_fit <- gbm(
-  formula = Surv(time, status) ~ .,
-  data = train,
-  distribution = "coxph",  
-  n.trees = 5000,           
-  shrinkage = 0.01,         
-  interaction.depth = 3,    
-  n.minobsinnode = 10,      
-  bag.fraction = 0.7,       
-  cv.folds = 10,            
-  verbose = FALSE
-)
-
-
-
-
-
-
-library(survival)
-library(survminer)
-rm(list = ls())
-# Training cohort 5-year css
-aa<-read.csv("train.csv")
-fit=survfit(Surv(time,css==1)~1,data=aa)
-summary(fit) 
-res<- summary(fit, times = 60)
-surv_36 <- res$surv
-round(surv_36, 3)
-
-# Testing cohort 5-year css
-aa<-read.csv("test.csv")
-fit=survfit(Surv(time,css==1)~1,data=aa)
-summary(fit) 
-res<- summary(fit, times = 60)
-surv_36 <- res$surv
-round(surv_36, 3)
-
-# Validation cohort 5-year css
-aa<-read.csv("validation.csv")
-fit=survfit(Surv(time,css==1)~1,data=aa)
-summary(fit) 
-res<- summary(fit, times = 60)
-surv_36 <- res$surv
-round(surv_36, 3)
-
-
-
-
-
-library(survival)
-library(survminer)
-rm(list = ls())
-
-# Training cohort 5-year css
-aa<-read.csv("train.csv")
-aa$Lodds<-factor(aa$Lodds,levels = c(1,2,3),
-                 labels = c("Low","Medium","High"))
-cox=coxph(Surv(time, css=="1") ~aa$Lodds, data = aa)
-summary(cox)
-fit=survfit(Surv(time,css==1)~Lodds,data=aa)
-summary(fit) 
-p <- ggsurvplot(fit,
-                pval = TRUE,  
-                conf.int = T,
-                risk.table = F,                   
-                risk.table.col = "strata",          
-                surv.median.line = "none",         
-                xlim = c(0,120),                      
-                xlab = "Time (months)",              
-                ylab = "",                          
-                break.time.by = 24,                
-                ylim = c(0,1),                      
-                linetype = "solid", 
-                legend = "none",
-                risk.table.height = 0.3,          
-                risk.table.y.text =T
-) 
-p
-
-# Training cohort 5-year css
-aa<-read.csv("test.csv")
-aa$Lodds<-factor(aa$Lodds,levels = c(1,2,3),
-                 labels = c("Low","Medium","High"))
-cox=coxph(Surv(time, css=="1") ~aa$Lodds, data = aa)
-summary(cox)
-fit=survfit(Surv(time,css==1)~Lodds,data=aa)
-summary(fit) 
-p <- ggsurvplot(fit,
-                pval = TRUE,  
-                conf.int = T,
-                risk.table = F,                   
-                risk.table.col = "strata",          
-                surv.median.line = "none",         
-                xlim = c(0,120),                      
-                xlab = "Time (months)",              
-                ylab = "",                          
-                break.time.by = 24,                
-                ylim = c(0,1),                      
-                linetype = "solid", 
-                legend = "none",
-                risk.table.height = 0.3,          
-                risk.table.y.text =T
-) 
-p
